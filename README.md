@@ -1,7 +1,8 @@
 # claude-micro
 
 Drive Claude from a Work Louder **Creator Micro 2** (or Codex Micro) and see
-Claude's status on its lights.
+Claude's status on its lights: sessions on this Mac and sessions on a server
+you drive by Remote Control, side by side on the six agent keys.
 
 **Status: experimental and unofficial.** Built for one desk and shared as is.
 It is not affiliated with Work Louder, OpenAI or Anthropic, and it relies on
@@ -45,6 +46,46 @@ gets a key like a local one. See "Sessions on a server" below.
 In iTerm (Claude Code): Return, Esc, Cmd+Shift+[ / ] for tabs, Shift+Up /
 Shift+Down on the dial for effort, mic key as above. Keys do nothing in any
 other app.
+
+## How this differs from the other pad projects
+
+Several good projects already drive this pad. This one exists for a
+combination none of them covered when I looked (November 2026):
+
+- **Sessions on other machines count.** Claude Code sessions you run on a
+  server by Remote Control, or over ssh, light the agent keys and open in the
+  desktop app on a press, through a small relay. Every other project I found
+  shows sessions on the local machine only.
+- **Local sessions count too.** Sessions in the Claude desktop app, and in
+  iTerm, get keys the same way. Both kinds share the six keys.
+- **Aimed at the Claude desktop app.** Keys send the app's own shortcuts,
+  only while it is frontmost, and a session key opens that session through
+  the app's own session links, including Remote Control sessions.
+- **Stock pad, no flashing, no keymap surgery.** It uses the ChatGPT preset
+  that Work Louder's Input app installs on a Creator Micro 2, and the same
+  vendor protocol the ChatGPT app speaks. Nothing is written to the pad's
+  firmware or keymap.
+- **The pad's quirks are handled.** Dial detents arrive as a different event
+  code, a held key auto-repeats as press/release pairs, a key's release can
+  arrive as a second event, and some presses double-report. The helper filters
+  all of that, and the README says so, which took a while to learn.
+- **Runs itself.** A login item, a doctor that names what is missing, a
+  yielding rule for the ChatGPT app, and an uninstall script that restores
+  your settings.
+
+For comparison, as their READMEs described them at the time:
+[alasano/house-of-herdr](https://github.com/alasano/house-of-herdr)
+(`codex-micro`) drives the Herdr terminal multiplexer and is where this
+project's device layer comes from;
+[RobbieTheWagner/opencode-codex-micro](https://github.com/RobbieTheWagner/opencode-codex-micro)
+does the same for OpenCode, locally;
+[honest-andy/cm2-agent-keys](https://github.com/honest-andy/cm2-agent-keys)
+is a library with a local Claude Code and iTerm example and documented the
+protocol for the Creator Micro 2;
+[gotalab/creator-micro-setup](https://github.com/gotalab/creator-micro-setup)
+targets the Claude desktop app with ordinary keystrokes from a second Input
+layer rather than the vendor protocol. If one of those fits your setup better,
+use it; they are all small and readable.
 
 ## Tested with
 
