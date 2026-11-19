@@ -1,0 +1,37 @@
+{
+  "name": "claude-micro",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Drive Claude from a Work Louder Creator Micro 2 and show Claude Code session status on its lights (macOS, unofficial)",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "claude-micro": "./bin/claude-micro.js"
+  },
+  "scripts": {
+    "build": "cc -O2 -mmacosx-version-min=14.0 -o bin/tapkey native/tapkey.c -framework ApplicationServices -framework AppKit",
+    "postinstall": "npm run build",
+    "doctor": "node bin/claude-micro.js doctor",
+    "start": "node bin/claude-micro.js run",
+    "probe": "node bin/claude-micro.js probe"
+  },
+  "dependencies": {
+    "node-hid": "^3.4.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "work-louder",
+    "creator-micro",
+    "codex-micro",
+    "claude",
+    "claude-code",
+    "macropad",
+    "hid"
+  ],
+  "author": "Joseph Barreca",
+  "os": [
+    "darwin"
+  ]
+}

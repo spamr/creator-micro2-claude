@@ -1,0 +1,7 @@
+node_modules/
+# Compiled keystroke helper: build it with `npm run build`.
+bin/tapkey
+# Local state: logs, events, relay topic, generated installers, session table.
+state/*
+!state/.gitkeep
+.DS_Store
