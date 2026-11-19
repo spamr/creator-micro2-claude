@@ -28,6 +28,6 @@
   <rect class="k cmd" x="436" y="288" width="80" height="64" rx="8"/><text class="t" x="476" y="316" text-anchor="middle">Send</text><text class="s" x="476" y="334" text-anchor="middle">Return</text>
   <line x1="544" y1="60" x2="600" y2="60" stroke="#888780" stroke-width="0.8" stroke-dasharray="3 3"/><text class="n" x="604" y="64">ring</text>
   <text class="n" x="340" y="404" text-anchor="middle">Dial: turn to scroll; click for the effort menu, turn to choose, click to confirm. Model key works the same way.</text>
-  <text class="n" x="340" y="426" text-anchor="middle">Agent keys light per Claude Code session: blue working, green done, amber breathing needs you, soft warm glow seen. Press to open it.</text>
+  <text class="n" x="340" y="426" text-anchor="middle">Agent keys light per Claude Code session: blue working, green done, deep red breathing needs you, soft warm glow seen. Press to open it.</text>
   <text class="n" x="340" y="448" text-anchor="middle">Blue outline = the ring, which follows the focused session. Tap the layer sensor to cycle layers; use the ChatGPT layer.</text>
 </svg>

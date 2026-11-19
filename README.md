@@ -17,7 +17,7 @@ any update may change. macOS only.
   the Claude desktop app (or iTerm running Claude Code) is the frontmost app.
 - **Lights show Claude Code sessions.** Each session takes one of the six
   agent keys and keeps it: blue breathing while working, green when done,
-  amber when it needs you, a soft warm glow once you have looked. Pressing the key
+  deep red breathing when it needs you, a soft warm glow once you have looked. Pressing the key
   opens that session in the desktop app. The ring follows the session you
   last submitted to.
 - **It yields to ChatGPT.** While the ChatGPT desktop app runs it releases the

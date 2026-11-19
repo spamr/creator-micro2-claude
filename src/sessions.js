@@ -20,8 +20,8 @@ export const STATUS_LIGHT = {
   // Pure blue: any green component shows at the dim end of the breath.
   working: { c: 0x0000ff, b: 1, e: EFFECT.breath, s: 0.35 },
   done: { c: COLORS.green, b: 1, e: EFFECT.solid, s: 0 },
-  // Needs you: bright amber, breathing fast, so it cannot be mistaken for "seen".
-  needs: { c: COLORS.amber, b: 1, e: EFFECT.breath, s: 0.7 },
+  // Needs you: deep red, breathing fast, unmistakable next to green and blue.
+  needs: { c: 0xff0000, b: 1, e: EFFECT.breath, s: 0.7 },
   // Seen: dim white, which these LEDs render as a soft warm glow.
   idle: { c: COLORS.white, b: 0.2, e: EFFECT.solid, s: 0 },
 };
