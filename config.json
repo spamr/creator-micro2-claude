@@ -10,7 +10,7 @@
         "key": "escape"
       },
       "ACT08": {
-        "session": "urgent"
+        "key": "cmd+f"
       },
       "ACT09": {
         "key": "cmd+shift+k"

@@ -35,7 +35,7 @@ gets a key like a local one. See "Sessions on a server" below.
 | Agent keys 1 to 6 | one Claude Code session each; press to open it, hold for a second to free the key |
 | Key 1 | Cmd+N, new session |
 | Key 2 | Esc, stop the current response |
-| Key 3 | opens the lit session that most needs you: red first, then working, then finished |
+| Key 3 | Cmd+F, find in the conversation |
 | Key 4 | Cmd+Shift+K, search across sessions |
 | Stick up / down | Cmd+Shift+[ / ], previous / next session |
 | Model (bottom row, left) | Cmd+Shift+I model menu; then dial to choose, dial click to confirm |
