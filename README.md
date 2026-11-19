@@ -76,7 +76,7 @@ Wispr Flow, and the server relay uses ntfy.sh. See "Changing the key map" and
 ## Install
 
 ```bash
-git clone <this repo> && cd creator-micro2-claude
+git clone https://github.com/spamr/creator-micro2-claude.git && cd creator-micro2-claude
 npm install                              # also compiles the keystroke helper (needs Xcode command line tools)
 node bin/claude-micro.js hooks diff      # review the Claude settings change
 node bin/claude-micro.js hooks install   # backs up ~/.claude/settings.json first
