@@ -14,7 +14,7 @@ export const EVENTS_PATH = STATE_DIR + "events.jsonl";
 // Sessions survive a helper restart: saved on every change, loaded at start.
 export const SESSIONS_PATH = STATE_DIR + "sessions.json";
 const ROTATE_BYTES = 1024 * 1024;
-const IDLE_EXPIRE_MS = 12 * 60 * 60 * 1000; // a key held by a silent session for 12 h is freed
+const DEFAULT_EXPIRE_HOURS = 4; // a finished or idle session silent this long gives its key back
 
 export const STATUS_LIGHT = {
   // Pure blue: any green component shows at the dim end of the breath.
@@ -46,10 +46,22 @@ export class Sessions extends EventEmitter {
   #offset = 0;
   #timer = null;
 
-  constructor(log, keyOrder = () => [0, 1, 2, 3, 4, 5]) {
+  constructor(log, keyOrder = () => [0, 1, 2, 3, 4, 5], expireHours = () => DEFAULT_EXPIRE_HOURS) {
     super();
     this.log = log;
     this.keyOrder = keyOrder;
+    this.expireHours = expireHours;
+  }
+
+  /** Give a key back by hand (long press, or `claude-micro keys free N`). */
+  free(slot) {
+    const s = this.bySlot(slot);
+    if (!s) return false;
+    this.sessions.delete(s.id);
+    if (this.focused === s.id) this.focused = null;
+    this.log(`key ${slot + 1} freed (session ${short(s.id)}, ${s.cwd || "no cwd"})`);
+    this.emit("change");
+    return true;
   }
 
   start() {
@@ -82,7 +94,7 @@ export class Sessions extends EventEmitter {
       const saved = JSON.parse(readFileSync(SESSIONS_PATH, "utf8"));
       const now = Date.now();
       for (const s of saved.sessions ?? []) {
-        if (now - s.seen > IDLE_EXPIRE_MS) continue;
+        if (now - s.seen > this.expireHours() * 60 * 60 * 1000) continue;
         // Whatever was "working" when the helper stopped may have finished since.
         if (s.status === "working") s.status = "idle";
         this.sessions.set(s.id, s);
@@ -230,12 +242,15 @@ export class Sessions extends EventEmitter {
   expire() {
     const now = Date.now();
     let changed = false;
+    const limit = this.expireHours() * 60 * 60 * 1000;
     for (const [id, s] of this.sessions) {
-      if (s.status !== "working" && now - s.seen > IDLE_EXPIRE_MS) {
+      if (s.status !== "working" && now - s.seen > limit) {
         this.sessions.delete(id);
+        this.log(`key ${s.slot + 1} freed: session ${short(id)} silent for ${this.expireHours()} h`);
         changed = true;
       }
     }
+    if (changed) this.emit("change");
     return changed;
   }
 

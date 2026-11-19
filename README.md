@@ -31,7 +31,7 @@ gets a key like a local one. See "Sessions on a server" below.
 
 | Control | Action |
 | --- | --- |
-| Agent keys 1 to 6 | one Claude Code session each; press to open it |
+| Agent keys 1 to 6 | one Claude Code session each; press to open it, hold for a second to free the key |
 | Key 1 | Cmd+N, new session |
 | Key 2 | Esc, stop the current response |
 | Key 3 / Key 4 | Cmd+Shift+[ / ], previous / next session |
@@ -95,6 +95,7 @@ the pre-install settings file back). Backups live next to
 | `node bin/claude-micro.js run` | run in the foreground (the login item exits while a manual copy runs) |
 | `... doctor` | check pad, layer, permissions, helper, hooks, login item |
 | `... status` / `stop` | talk to the running helper |
+| `... keys` / `keys free N` | list what each agent key holds, or free a key by hand |
 | `... config` | print the parsed key map |
 | `... probe [colour]` | raw pad events and a ring colour, for debugging |
 | `... hooks diff / install / uninstall / status` | manage the Claude Code hooks |
@@ -127,6 +128,17 @@ or `rcmd` (always held). Modifiers: `cmd`, `shift`, `alt`/`opt`, `ctrl`.
 `menu` re-binds the dial for six seconds after the key fires.
 `agent_key_order` lists which agent keys sessions may use, in order; keys left
 out are never used, for example `[1, 3, 4, 5, 6]` to retire a faulty switch.
+`session_expiry_hours` (default 4) is how long a finished or idle session may
+stay silent before its key is given back.
+
+## When a key is taken
+
+A session keeps its key until it ends, until it has been silent for
+`session_expiry_hours`, until you hold its key for a second, or until all six
+keys are busy and a newer session evicts the stalest finished one. Sessions on
+a server that were not started under Remote Control still light a key (their
+status is real) but a press cannot open them, since there is no window for
+them anywhere; hold the key to free it.
 
 ## How it works, briefly
 

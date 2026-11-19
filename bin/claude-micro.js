@@ -43,6 +43,24 @@ switch (command) {
     await run(rest[0]);
     break;
   }
+  case "keys": {
+    const { ask } = await import("../src/control.js");
+    if (rest[0] === "free" && /^[1-6]$/.test(rest[1] ?? "")) {
+      const reply = await ask(`free ${rest[1]}`);
+      console.log(!reply ? "helper is not running" : reply.freed ? `key ${rest[1]} freed` : `key ${rest[1]} held no session`);
+      break;
+    }
+    const status = await ask("status");
+    if (!status) {
+      console.log("helper is not running");
+      break;
+    }
+    for (let key = 1; key <= 6; key++) {
+      const s = status.sessions.find((x) => x.key === key);
+      console.log(`key ${key}: ${s ? `${s.status.padEnd(7)} ${s.where.padEnd(7)} ${s.cwd}` : "free"}`);
+    }
+    break;
+  }
   case "status": {
     const { ask } = await import("../src/control.js");
     const status = await ask("status");
@@ -94,6 +112,6 @@ switch (command) {
     break;
   }
   default:
-    console.log("usage: claude-micro <run|status|stop|doctor|probe [colour]|front|config|hooks <diff|install|uninstall|status>|agent <install|uninstall|status>|cloud <setup|test|repo-files>>");
+    console.log("usage: claude-micro <run|status|stop|keys [free N]|doctor|probe [colour]|front|config|hooks <diff|install|uninstall|status>|agent <install|uninstall|status>|cloud <setup|test|repo-files>>");
     process.exit(command === "help" ? 0 : 2);
 }

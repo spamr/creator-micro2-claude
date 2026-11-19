@@ -37,9 +37,12 @@ export class Daemon {
   constructor(log = createLogger()) {
     this.log = log;
     this.#config = loadConfig();
-    this.sessions = new Sessions(log, () => this.#config.keyOrder);
+    this.sessions = new Sessions(log, () => this.#config.keyOrder, () => this.#config.expireHours);
     this.sessions.on("change", () => this.#schedulePaint());
     this.controls = new Controls(() => this.#config, log, {
+      onAgentHold: (slot) => {
+        if (!this.sessions.free(slot)) log(`agent key ${slot + 1} held: nothing to free`);
+      },
       onAgentKey: (slot) => {
         // Opening a session is a navigation in the app; a second press within
         // two seconds only sends it through the same navigation again.
@@ -117,6 +120,7 @@ export class Daemon {
         setTimeout(() => void this.stop().finally(() => process.exit(0)), 50);
         return { stopping: true };
       },
+      free: (slot) => ({ freed: this.sessions.free(slot) }),
     });
     if (!this.#control) {
       this.log("another claude-micro is already running on this machine; exiting");

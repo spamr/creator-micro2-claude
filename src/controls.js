@@ -12,6 +12,8 @@ const DEBOUNCE_MS = 150;
 // A held key auto-repeats as press/release pairs ~150 ms apart. A release
 // followed by a press of the same key inside this window is one long hold.
 const HOLD_GRACE_MS = 260;
+// Holding an agent key this long frees it instead of opening its session.
+const AGENT_HOLD_MS = 1200;
 const ENGAGE_DISTANCE = 0.75;
 const RELEASE_DISTANCE = 0.3;
 // Angle is a 0..1 turn clockwise from east; sector centres at 0, .25, .5, .75.
@@ -32,10 +34,14 @@ export class Controls {
   // Releases waiting out the grace period: key -> timer.
   #pendingRelease = new Map();
 
-  constructor(getConfig, log, { onAgentKey = () => {} } = {}) {
+  // Agent key in progress: { slot, holdTimer, finalizeTimer, consumed }.
+  #agent = null;
+
+  constructor(getConfig, log, { onAgentKey = () => {}, onAgentHold = () => {} } = {}) {
     this.getConfig = getConfig;
     this.log = log;
     this.onAgentKey = onAgentKey;
+    this.onAgentHold = onAgentHold;
   }
 
   onHid(key, act) {
@@ -47,6 +53,38 @@ export class Controls {
   }
 
   /** Release anything still held (device gone, shutdown, ChatGPT takeover). */
+  // A short press fires on release; holding for AGENT_HOLD_MS fires the hold
+  // action instead. The pad repeats a held key as press/release pairs, so a
+  // release only counts once no re-press follows within the grace period.
+  #agentKey(slot, act) {
+    const current = this.#agent;
+    if (act === 1) {
+      if (current && current.slot === slot && current.finalizeTimer) {
+        clearTimeout(current.finalizeTimer);
+        current.finalizeTimer = null;
+        return;
+      }
+      if (current) this.#agentFinish(current);
+      const entry = { slot, finalizeTimer: null, consumed: false };
+      entry.holdTimer = setTimeout(() => {
+        entry.consumed = true;
+        this.onAgentHold(slot);
+      }, AGENT_HOLD_MS);
+      this.#agent = entry;
+      return;
+    }
+    if (act === 0 && current && current.slot === slot && !current.finalizeTimer) {
+      current.finalizeTimer = setTimeout(() => this.#agentFinish(current), HOLD_GRACE_MS);
+    }
+  }
+
+  #agentFinish(entry) {
+    clearTimeout(entry.holdTimer);
+    clearTimeout(entry.finalizeTimer);
+    if (this.#agent === entry) this.#agent = null;
+    if (!entry.consumed) this.onAgentKey(entry.slot);
+  }
+
   async #release(key) {
     this.#down.delete(key);
     const held = this.#held.get(key);
@@ -57,6 +95,11 @@ export class Controls {
   }
 
   async resetInputState() {
+    if (this.#agent) {
+      clearTimeout(this.#agent.holdTimer);
+      clearTimeout(this.#agent.finalizeTimer);
+      this.#agent = null;
+    }
     for (const timer of this.#pendingRelease.values()) clearTimeout(timer);
     this.#pendingRelease.clear();
     this.#down.clear();
@@ -77,7 +120,7 @@ export class Controls {
   async #dispatchHid(key, act) {
     const agent = /^AG0([0-5])$/.exec(key);
     if (agent) {
-      if (act === 1) this.onAgentKey(Number(agent[1]));
+      this.#agentKey(Number(agent[1]), act);
       return;
     }
     if (act === 0) {

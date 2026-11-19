@@ -110,5 +110,10 @@ export function loadConfig(path = CONFIG_PATH) {
     if (!valid) throw new Error("agent_key_order must list distinct keys from 1 to 6, e.g. [1, 3, 4, 5, 6]; keys left out are never used");
     keyOrder = order.map((k) => k - 1);
   }
-  return { targets, keyOrder, raw };
+  let expireHours = 4;
+  if (raw.session_expiry_hours !== undefined) {
+    expireHours = Number(raw.session_expiry_hours);
+    if (!(expireHours > 0)) throw new Error("session_expiry_hours must be a positive number");
+  }
+  return { targets, keyOrder, expireHours, raw };
 }

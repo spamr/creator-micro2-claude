@@ -52,7 +52,11 @@ export async function serve(handlers) {
       const command = buffer.slice(0, newline).trim();
       let reply;
       try {
-        reply = command === "status" ? await handlers.status() : command === "stop" ? await handlers.stop() : { error: `unknown command ${command}` };
+        const [verb, arg] = command.split(/\s+/);
+        if (verb === "status") reply = await handlers.status();
+        else if (verb === "stop") reply = await handlers.stop();
+        else if (verb === "free" && /^[1-6]$/.test(arg ?? "")) reply = await handlers.free(Number(arg) - 1);
+        else reply = { error: `unknown command ${command}` };
       } catch (e) {
         reply = { error: e.message };
       }
