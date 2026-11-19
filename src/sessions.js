@@ -259,6 +259,24 @@ export class Sessions extends EventEmitter {
     return null;
   }
 
+  /** The lit session that most needs you: red first, then working, then done, newest first. */
+  mostUrgent() {
+    let best = null;
+    for (const s of this.sessions.values()) {
+      if (!best || URGENCY[s.status] > URGENCY[best.status] || (URGENCY[s.status] === URGENCY[best.status] && s.seen > best.seen)) best = s;
+    }
+    return best;
+  }
+
+  /** The next (+1) or previous (-1) lit session in key order, relative to the focused one. */
+  neighbour(step) {
+    const lit = [...this.sessions.values()].sort((a, b) => a.slot - b.slot);
+    if (lit.length === 0) return null;
+    const index = lit.findIndex((s) => s.id === this.focused);
+    if (index === -1) return step > 0 ? lit[0] : lit[lit.length - 1];
+    return lit[(index + step + lit.length) % lit.length];
+  }
+
   /** Pressing a key marks a finished session as seen and makes it the focus. */
   press(slot) {
     const s = this.bySlot(slot);

@@ -20,7 +20,7 @@
   <rect class="k agent" x="436" y="136" width="80" height="64" rx="8"/><text class="t" x="476" y="164" text-anchor="middle">Agent 6</text><text class="s" x="476" y="182" text-anchor="middle">session</text>
   <rect class="k cmd" x="160" y="212" width="80" height="64" rx="8"/><text class="t" x="200" y="240" text-anchor="middle">Key 1</text><text class="s" x="200" y="258" text-anchor="middle">new session</text>
   <rect class="k cmd" x="252" y="212" width="80" height="64" rx="8"/><text class="t" x="292" y="240" text-anchor="middle">Key 2</text><text class="s" x="292" y="258" text-anchor="middle">Esc, stop</text>
-  <rect class="k cmd" x="344" y="212" width="80" height="64" rx="8"/><text class="t" x="384" y="240" text-anchor="middle">Key 3</text><text class="s" x="384" y="258" text-anchor="middle">waiting for you</text>
+  <rect class="k cmd" x="344" y="212" width="80" height="64" rx="8"/><text class="t" x="384" y="240" text-anchor="middle">Key 3</text><text class="s" x="384" y="258" text-anchor="middle">needs you most</text>
   <rect class="k cmd" x="436" y="212" width="80" height="64" rx="8"/><text class="t" x="476" y="240" text-anchor="middle">Key 4</text><text class="s" x="476" y="258" text-anchor="middle">search</text>
   <circle class="k" cx="200" cy="320" r="14"/><text class="n" x="200" y="352" text-anchor="middle">layer sensor</text>
   <rect class="k cmd" x="252" y="288" width="80" height="64" rx="8"/><text class="t" x="292" y="316" text-anchor="middle">Model</text><text class="s" x="292" y="334" text-anchor="middle">model menu</text>

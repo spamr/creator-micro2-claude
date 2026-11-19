@@ -35,7 +35,7 @@ gets a key like a local one. See "Sessions on a server" below.
 | Agent keys 1 to 6 | one Claude Code session each; press to open it, hold for a second to free the key |
 | Key 1 | Cmd+N, new session |
 | Key 2 | Esc, stop the current response |
-| Key 3 | opens the app's "sessions waiting for you" view (the sessions blocked on you) |
+| Key 3 | opens the lit session that most needs you: red first, then working, then finished |
 | Key 4 | Cmd+Shift+K, search across sessions |
 | Stick up / down | Cmd+Shift+[ / ], previous / next session |
 | Model (bottom row, left) | Cmd+Shift+I model menu; then dial to choose, dial click to confirm |
@@ -169,6 +169,8 @@ left and middle), `ACT12` (Send), `ENC_CW` / `ENC_CC` (dial turn), `ENC_CLK`
 arrows, `f1`-`f20`, `[`, `]`, `-`, `=`, `/`, and bare modifiers such as `fn`
 or `rcmd` (always held). Modifiers: `cmd`, `shift`, `alt`/`opt`, `ctrl`.
 `menu` re-binds the dial for six seconds after the key fires.
+`{"session": "urgent"}` opens the lit session that most needs you;
+`{"session": "next"}` and `"prev"` step through the lit keys in order.
 `agent_key_order` lists which agent keys sessions may use, in order; keys left
 out are never used, for example `[1, 3, 4, 5, 6]` to retire a faulty switch.
 `session_expiry_hours` (default 4) is how long a finished or idle session may

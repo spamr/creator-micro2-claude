@@ -40,6 +40,16 @@ export class Daemon {
     this.sessions = new Sessions(log, () => this.#config.keyOrder, () => this.#config.expireHours);
     this.sessions.on("change", () => this.#schedulePaint());
     this.controls = new Controls(() => this.#config, log, {
+      onSessionAction: (action) => {
+        const target = action === "urgent" ? this.sessions.mostUrgent() : this.sessions.neighbour(action === "next" ? 1 : -1);
+        if (!target) {
+          log(`session ${action}: no lit session`);
+          return;
+        }
+        log(`session ${action}: key ${target.slot + 1} (${target.status})`);
+        this.sessions.press(target.slot);
+        void focusSession(target, log);
+      },
       onAgentHold: (slot) => {
         if (!this.sessions.free(slot)) log(`agent key ${slot + 1} held: nothing to free`);
       },

@@ -6,6 +6,8 @@
 //   { "key": "space", "hold": true } press on key down, release on key up
 //   { "scroll": 3 }                wheel scroll (positive = down) per tick
 //   { "scroll": 3, "window": "Claude", "at": [0.5, 0.4] } ...aimed at a spot in that app's window
+//   { "session": "urgent" }          open the lit session that most needs you (red, then working, then done)
+//   { "session": "next" | "prev" }   open the next / previous lit session in key order
 //   { "exec": ["open", "-a", "X"] } run a command (argv, no shell) on press
 //   { "exec": [...], "release": [...] } ...and another command on release
 // A binding may add "menu": { "ENC_CW": ..., "ENC_CC": ..., "ENC_CLK": ... }
@@ -43,11 +45,15 @@ function parseBinding(where, raw, allowHold) {
 function parseBindingBody(where, raw, allowHold) {
   if (raw === "none" || raw == null) return { kind: "none" };
   if (typeof raw !== "object") throw new Error(`${where}: expected "none" or an object`);
-  const kinds = ["key", "scroll", "exec"].filter((k) => k in raw);
+  const kinds = ["key", "scroll", "exec", "session"].filter((k) => k in raw);
   for (const k of Object.keys(raw)) {
-    if (!["key", "hold", "scroll", "window", "at", "exec", "release", "menu", "menu_timeout_ms"].includes(k)) throw new Error(`${where}: unknown field "${k}"`);
+    if (!["key", "hold", "scroll", "window", "at", "exec", "release", "session", "menu", "menu_timeout_ms"].includes(k)) throw new Error(`${where}: unknown field "${k}"`);
   }
-  if (kinds.length !== 1) throw new Error(`${where}: name exactly one of key, scroll, exec`);
+  if (kinds.length !== 1) throw new Error(`${where}: name exactly one of key, scroll, exec, session`);
+  if (kinds[0] === "session") {
+    if (!["urgent", "next", "prev"].includes(raw.session)) throw new Error(`${where}: session must be "urgent", "next" or "prev"`);
+    return { kind: "session", action: raw.session, label: `session ${raw.session}` };
+  }
   if (kinds[0] === "key") {
     const combo = parseKeyCombo(raw.key);
     const hold = raw.hold === true || isModifierKey(combo.keyCode);

@@ -1,5 +1,5 @@
 {
-  "_comment": "Bindings per frontmost app (bundle id). Inputs: ACT06-ACT09 command keys (left to right), ACT10/ACT11 mic bar, ACT12 bottom key, ENC_CW/ENC_CC dial turn, ENC_CLK dial click, joystick up/down/left/right. Binding: \"none\" | {\"key\": \"cmd+shift+]\"} | {\"key\": \"space\", \"hold\": true} | {\"scroll\": 3} | {\"exec\": [\"open\", \"-a\", \"Claude\"]} | {\"exec\": [...], \"release\": [...]}. See README. Optional \"agent_key_order\" lists which agent keys sessions may use, in order (default 1 to 6). \"session_expiry_hours\": a finished or idle session silent this long gives its key back (default 4).",
+  "_comment": "Bindings per frontmost app (bundle id). Inputs: ACT06-ACT09 command keys (left to right), ACT10/ACT11 mic bar, ACT12 bottom key, ENC_CW/ENC_CC dial turn, ENC_CLK dial click, joystick up/down/left/right. Binding: \"none\" | {\"key\": \"cmd+shift+]\"} | {\"key\": \"space\", \"hold\": true} | {\"scroll\": 3} | {\"exec\": [\"open\", \"-a\", \"Claude\"]} | {\"exec\": [...], \"release\": [...]} | {\"session\": \"urgent\" | \"next\" | \"prev\"}. See README. Optional \"agent_key_order\" lists which agent keys sessions may use, in order (default 1 to 6). \"session_expiry_hours\": a finished or idle session silent this long gives its key back (default 4).",
   "targets": {
     "com.anthropic.claudefordesktop": {
       "name": "Claude desktop app",
@@ -10,10 +10,7 @@
         "key": "escape"
       },
       "ACT08": {
-        "exec": [
-          "open",
-          "claude://code/needs-input?source=claude-micro"
-        ]
+        "session": "urgent"
       },
       "ACT09": {
         "key": "cmd+shift+k"

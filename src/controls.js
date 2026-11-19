@@ -37,11 +37,12 @@ export class Controls {
   // Agent key in progress: { slot, holdTimer, finalizeTimer, consumed }.
   #agent = null;
 
-  constructor(getConfig, log, { onAgentKey = () => {}, onAgentHold = () => {} } = {}) {
+  constructor(getConfig, log, { onAgentKey = () => {}, onAgentHold = () => {}, onSessionAction = () => {} } = {}) {
     this.getConfig = getConfig;
     this.log = log;
     this.onAgentKey = onAgentKey;
     this.onAgentHold = onAgentHold;
+    this.onSessionAction = onSessionAction;
   }
 
   onHid(key, act) {
@@ -216,6 +217,8 @@ export class Controls {
     } else if (binding.kind === "exec") {
       if (binding.release) this.#held.set(input, { release: binding.release });
       this.#exec(binding.argv);
+    } else if (binding.kind === "session") {
+      this.onSessionAction(binding.action);
     }
   }
 
