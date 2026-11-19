@@ -10,10 +10,13 @@
         "key": "escape"
       },
       "ACT08": {
-        "key": "cmd+shift+["
+        "exec": [
+          "open",
+          "claude://code/needs-input?source=claude-micro"
+        ]
       },
       "ACT09": {
-        "key": "cmd+shift+]"
+        "key": "cmd+shift+k"
       },
       "ACT10": {
         "key": "cmd+shift+i",
@@ -72,6 +75,14 @@
           "ENC_CLK": {
             "key": "return"
           }
+        }
+      },
+      "joystick": {
+        "up": {
+          "key": "cmd+shift+["
+        },
+        "down": {
+          "key": "cmd+shift+]"
         }
       }
     },

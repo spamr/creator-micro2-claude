@@ -13,15 +13,15 @@
   <circle class="k" cx="200" cy="92" r="30"/><text class="t" x="200" y="90" text-anchor="middle">Dial</text><text class="s" x="200" y="105" text-anchor="middle">scroll / effort</text>
   <rect class="k agent" x="252" y="60" width="80" height="64" rx="8"/><text class="t" x="292" y="88" text-anchor="middle">Agent 1</text><text class="s" x="292" y="106" text-anchor="middle">session</text>
   <rect class="k agent" x="344" y="60" width="80" height="64" rx="8"/><text class="t" x="384" y="88" text-anchor="middle">Agent 2</text><text class="s" x="384" y="106" text-anchor="middle">session</text>
-  <circle class="k" cx="476" cy="92" r="30"/><text class="t" x="476" y="90" text-anchor="middle">Stick</text><text class="s" x="476" y="105" text-anchor="middle">unbound</text>
+  <circle class="k" cx="476" cy="92" r="30"/><text class="t" x="476" y="90" text-anchor="middle">Stick</text><text class="s" x="476" y="105" text-anchor="middle">prev / next session</text>
   <rect class="k agent" x="160" y="136" width="80" height="64" rx="8"/><text class="t" x="200" y="164" text-anchor="middle">Agent 3</text><text class="s" x="200" y="182" text-anchor="middle">session</text>
   <rect class="k agent" x="252" y="136" width="80" height="64" rx="8"/><text class="t" x="292" y="164" text-anchor="middle">Agent 4</text><text class="s" x="292" y="182" text-anchor="middle">session</text>
   <rect class="k agent" x="344" y="136" width="80" height="64" rx="8"/><text class="t" x="384" y="164" text-anchor="middle">Agent 5</text><text class="s" x="384" y="182" text-anchor="middle">session</text>
   <rect class="k agent" x="436" y="136" width="80" height="64" rx="8"/><text class="t" x="476" y="164" text-anchor="middle">Agent 6</text><text class="s" x="476" y="182" text-anchor="middle">session</text>
   <rect class="k cmd" x="160" y="212" width="80" height="64" rx="8"/><text class="t" x="200" y="240" text-anchor="middle">Key 1</text><text class="s" x="200" y="258" text-anchor="middle">new session</text>
   <rect class="k cmd" x="252" y="212" width="80" height="64" rx="8"/><text class="t" x="292" y="240" text-anchor="middle">Key 2</text><text class="s" x="292" y="258" text-anchor="middle">Esc, stop</text>
-  <rect class="k cmd" x="344" y="212" width="80" height="64" rx="8"/><text class="t" x="384" y="240" text-anchor="middle">Key 3</text><text class="s" x="384" y="258" text-anchor="middle">previous session</text>
-  <rect class="k cmd" x="436" y="212" width="80" height="64" rx="8"/><text class="t" x="476" y="240" text-anchor="middle">Key 4</text><text class="s" x="476" y="258" text-anchor="middle">next session</text>
+  <rect class="k cmd" x="344" y="212" width="80" height="64" rx="8"/><text class="t" x="384" y="240" text-anchor="middle">Key 3</text><text class="s" x="384" y="258" text-anchor="middle">waiting for you</text>
+  <rect class="k cmd" x="436" y="212" width="80" height="64" rx="8"/><text class="t" x="476" y="240" text-anchor="middle">Key 4</text><text class="s" x="476" y="258" text-anchor="middle">search</text>
   <circle class="k" cx="200" cy="320" r="14"/><text class="n" x="200" y="352" text-anchor="middle">layer sensor</text>
   <rect class="k cmd" x="252" y="288" width="80" height="64" rx="8"/><text class="t" x="292" y="316" text-anchor="middle">Model</text><text class="s" x="292" y="334" text-anchor="middle">model menu</text>
   <rect class="k cmd" x="344" y="288" width="80" height="64" rx="8"/><text class="t" x="384" y="316" text-anchor="middle">Mic</text><text class="s" x="384" y="334" text-anchor="middle">hold to dictate</text>

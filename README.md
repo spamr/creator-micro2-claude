@@ -35,7 +35,9 @@ gets a key like a local one. See "Sessions on a server" below.
 | Agent keys 1 to 6 | one Claude Code session each; press to open it, hold for a second to free the key |
 | Key 1 | Cmd+N, new session |
 | Key 2 | Esc, stop the current response |
-| Key 3 / Key 4 | Cmd+Shift+[ / ], previous / next session |
+| Key 3 | opens the app's "sessions waiting for you" view (the sessions blocked on you) |
+| Key 4 | Cmd+Shift+K, search across sessions |
+| Stick up / down | Cmd+Shift+[ / ], previous / next session |
 | Model (bottom row, left) | Cmd+Shift+I model menu; then dial to choose, dial click to confirm |
 | Mic (bottom row, middle) | hold to dictate with Wispr Flow (hands-free start on press, stop on release) |
 | Send (bottom row, right) | Return |
