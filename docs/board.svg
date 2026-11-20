@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="680" height="470" viewBox="0 0 680 470" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="12">
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="514" viewBox="0 0 680 514" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="12">
   <title>Creator Micro 2 key map for Claude</title>
   <style>
     .k { fill: #f1efe8; stroke: #888780; stroke-width: 0.8; }
@@ -10,10 +10,10 @@
   </style>
   <rect x="136" y="36" width="408" height="340" rx="22" fill="none" stroke="#378add" stroke-width="3" opacity="0.6"/>
   <rect x="144" y="44" width="392" height="324" rx="16" fill="#fbfaf7" stroke="#b4b2a9" stroke-width="0.8"/>
-  <circle class="k" cx="200" cy="92" r="30"/><text class="t" x="200" y="90" text-anchor="middle">Dial</text><text class="s" x="200" y="105" text-anchor="middle">scroll / effort</text>
+  <circle class="k" cx="200" cy="92" r="30"/><text class="t" x="200" y="90" text-anchor="middle">Dial</text><text class="s" x="200" y="105" text-anchor="middle">scroll</text>
   <rect class="k agent" x="252" y="60" width="80" height="64" rx="8"/><text class="t" x="292" y="88" text-anchor="middle">Agent 1</text><text class="s" x="292" y="106" text-anchor="middle">session</text>
   <rect class="k agent" x="344" y="60" width="80" height="64" rx="8"/><text class="t" x="384" y="88" text-anchor="middle">Agent 2</text><text class="s" x="384" y="106" text-anchor="middle">session</text>
-  <circle class="k" cx="476" cy="92" r="30"/><text class="t" x="476" y="90" text-anchor="middle">Stick</text><text class="s" x="476" y="105" text-anchor="middle">prev / next session</text>
+  <circle class="k" cx="476" cy="92" r="30"/><text class="t" x="476" y="90" text-anchor="middle">Stick</text><text class="s" x="476" y="105" text-anchor="middle">sessions</text>
   <rect class="k agent" x="160" y="136" width="80" height="64" rx="8"/><text class="t" x="200" y="164" text-anchor="middle">Agent 3</text><text class="s" x="200" y="182" text-anchor="middle">session</text>
   <rect class="k agent" x="252" y="136" width="80" height="64" rx="8"/><text class="t" x="292" y="164" text-anchor="middle">Agent 4</text><text class="s" x="292" y="182" text-anchor="middle">session</text>
   <rect class="k agent" x="344" y="136" width="80" height="64" rx="8"/><text class="t" x="384" y="164" text-anchor="middle">Agent 5</text><text class="s" x="384" y="182" text-anchor="middle">session</text>
@@ -28,6 +28,8 @@
   <rect class="k cmd" x="436" y="288" width="80" height="64" rx="8"/><text class="t" x="476" y="316" text-anchor="middle">Send</text><text class="s" x="476" y="334" text-anchor="middle">Return</text>
   <line x1="544" y1="60" x2="600" y2="60" stroke="#888780" stroke-width="0.8" stroke-dasharray="3 3"/><text class="n" x="604" y="64">ring</text>
   <text class="n" x="340" y="404" text-anchor="middle">Dial: turn to scroll; click for the effort menu, turn to choose, click to confirm. Model key works the same way.</text>
-  <text class="n" x="340" y="426" text-anchor="middle">Agent keys light per Claude Code session: blue working, green done, deep red breathing needs you, soft warm glow seen. Press to open it.</text>
-  <text class="n" x="340" y="448" text-anchor="middle">Blue outline = the ring, which follows the focused session. Tap the layer sensor to cycle layers; use the ChatGPT layer.</text>
+  <text class="n" x="340" y="426" text-anchor="middle">Agent keys light per Claude Code session: blue working, green done, deep red breathing needs you,</text>
+  <text class="n" x="340" y="444" text-anchor="middle">soft warm glow seen. Press to open that session; hold for a second to free the key.</text>
+  <text class="n" x="340" y="466" text-anchor="middle">Blue outline = the ring, which follows the focused session. Tap the layer sensor to cycle layers; use the ChatGPT layer.</text>
+  <text class="n" x="340" y="488" text-anchor="middle">Stick up / down: previous / next session.</text>
 </svg>

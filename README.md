@@ -194,7 +194,8 @@ interface non-exclusively with node-hid. Keystrokes go through a tiny C helper
 (`native/tapkey.c`) that posts real modifier sequences and only while an
 allowed app is frontmost. Claude Code hooks append one line per event to
 `state/events.jsonl`; the helper tails it (`src/sessions.js`) and opens a
-session by the desktop app's `claude://code/continue?session=...` link.
+local session by the desktop app's `claude://code/continue?session=...` link,
+and a Remote Control session by its `claude://claude.ai/code/...` link.
 
 ## Sessions on a server (Remote Control, ssh)
 
@@ -212,8 +213,10 @@ ssh SERVER 'sh -s' < state/remote-install.sh  # installs the hook on the server 
 ```
 
 The server needs `curl` and `python3`. Sessions already running pick the hooks
-up on their next turn. Pressing a server session's key marks it seen; nothing
-opens, since the window is elsewhere. Anthropic-hosted cloud sessions can use
+up on their next turn. Pressing a server session's key opens it in the desktop
+app when it runs under Remote Control (the hook sends its Remote Control id).
+A server session started some other way only lights its key; a press marks it
+seen. Anthropic-hosted cloud sessions can use
 the same relay through the environment's setup script and a network allowlist
 entry for `ntfy.sh` (`cloud setup` prints the block); that path is untested.
 
