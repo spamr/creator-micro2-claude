@@ -47,10 +47,11 @@ export function repoFiles(relay) {
  *   ssh HOST 'sh -s' < state/remote-install.sh
  * It writes the hook script and merges the five hook entries into that
  * machine's ~/.claude/settings.json (backing the file up first). Needs
- * python3 there for the JSON merge; curl for publishing.
+ * python3 there for the JSON merge; curl only when a relay URL is given.
+ * With no URL the hook only writes ~/.claude/claude-micro-events.jsonl, which
+ * the helper follows over ssh (see src/remote.js).
  */
-export function remoteInstaller(relay) {
-  const url = publishUrl(relay);
+export function remoteInstaller(url = "") {
   return `#!/bin/sh
 # claude-micro remote installer (generated). Safe to run again.
 set -e
@@ -80,16 +81,16 @@ with open(path, "w") as f:
     f.write("\\n")
 print("claude-micro hooks installed in", path)
 PY
-payload="$(printf '{"sid":"install-test-%s","ev":"Stop","repo":"%s","cloud":1,"t":%s}' "$(hostname)" "$(hostname)" "$(date +%s)")"
+${url ? `payload="$(printf '{"sid":"install-test-%s","ev":"Stop","repo":"%s","cloud":1,"t":%s}' "$(hostname)" "$(hostname)" "$(date +%s)")"
 curl -s -m 5 -H 'Content-Type: application/json' -d "$payload" "${url}" >/dev/null && echo "relay reachable from this machine: a key on the pad should show green now"
-echo "New Claude Code sessions on this machine will report to the pad. Running sessions pick the hooks up on their next turn."
+` : ""}echo "New Claude Code sessions on this machine will report to the pad. Running sessions pick the hooks up on their next turn."
 `;
 }
 
 export async function run(sub) {
   if (sub === "remote-install") {
     const relay = ensureRelay();
-    process.stdout.write(remoteInstaller(relay));
+    process.stdout.write(remoteInstaller(publishUrl(relay)));
     return;
   }
   if (sub === "setup" || sub === "show") {

@@ -25,9 +25,9 @@ any update may change. macOS only.
 - **It yields to ChatGPT.** While the ChatGPT desktop app runs it releases the
   pad and reclaims it when ChatGPT quits (the pad serves one host at a time).
 
-Sessions on other machines count too: a Claude Code session you drive by
-Remote Control on a server (or over ssh) reports through a small relay, so it
-gets a key like a local one. See "Sessions on a server" below.
+Sessions on other machines count too: the helper follows a server's Claude
+Code sessions (Remote Control or plain ssh) over ssh, so each one gets a key
+like a local one. See "Sessions on a server" below.
 
 ## Controls (Claude desktop app)
 
@@ -57,7 +57,7 @@ combination none of them covered when I looked (November 2026):
 
 - **Sessions on other machines count.** Claude Code sessions you run on a
   server by Remote Control, or over ssh, light the agent keys and open in the
-  desktop app on a press, through a small relay. Every other project I found
+  desktop app on a press, followed over ssh. Every other project I found
   shows sessions on the local machine only.
 - **Local sessions count too.** Sessions in the Claude desktop app, and in
   iTerm, get keys the same way. Both kinds share the six keys.
@@ -102,8 +102,7 @@ use it; they are all small and readable.
 | Node | 23 (22 or newer should work) |
 
 Defaults that are mine and easy to change in `config.json`: the mic key drives
-Wispr Flow, and the server relay uses ntfy.sh. See "Changing the key map" and
-"Sessions on a server".
+Wispr Flow. See "Changing the key map".
 
 ## Requirements and permissions
 
@@ -143,6 +142,7 @@ the pre-install settings file back). Backups live next to
 | `... config` | print the parsed key map |
 | `... probe [colour]` | raw pad events and a ring colour, for debugging |
 | `... hooks diff / install / uninstall / status` | manage the Claude Code hooks |
+| `... remote add / remove / list SERVER` | follow a server's sessions over ssh |
 | `... agent install / uninstall / status / plist` | manage the login item |
 
 Logs: `state/helper.log` for the login item; a manual run prints to the terminal.
@@ -201,32 +201,44 @@ and a Remote Control session by its `claude://claude.ai/code/...` link.
 ## Sessions on a server (Remote Control, ssh)
 
 Hooks run where the session runs, so a session on another machine cannot write
-to this Mac directly. Instead its hooks publish one small JSON message per
-event (session id, event name, folder name) to a private topic on
-[ntfy.sh](https://ntfy.sh), and the helper streams that topic. The topic is a
-long random name generated once into `state/relay.json`; keep it private.
+to this Mac directly. Instead its hook appends one small JSON line per event
+(session id, event name, folder name, Remote Control id) to
+`~/.claude/claude-micro-events.jsonl` on that machine, and the helper follows
+that file over ssh. Nothing goes through a third-party service.
 
 ```bash
-node bin/claude-micro.js cloud setup          # creates the topic, prints instructions
-node bin/claude-micro.js cloud test           # fake session through the relay: a key should light
-node bin/claude-micro.js cloud remote-install > state/remote-install.sh
-ssh SERVER 'sh -s' < state/remote-install.sh  # installs the hook on the server (backs up its settings)
+node bin/claude-micro.js remote add SERVER    # SERVER = an ssh alias; installs the hook there (backs up its settings)
+launchctl kickstart -k gui/$(id -u)/com.claude-micro.helper   # restart the helper to start following it
+node bin/claude-micro.js doctor               # "server SERVER: following over ssh"
 ```
 
-The server needs `curl` and `python3`. Sessions already running pick the hooks
-up on their next turn. Pressing a server session's key opens it in the desktop
-app when it runs under Remote Control (the hook sends its Remote Control id).
-A server session started some other way only lights its key; a press marks it
-seen. Anthropic-hosted cloud sessions can use
-the same relay through the environment's setup script and a network allowlist
-entry for `ntfy.sh` (`cloud setup` prints the block); that path is untested.
+ssh must work without a prompt (`ssh -o BatchMode=yes SERVER true`), since the
+login item cannot answer one; a key in the macOS ssh agent or an unencrypted
+key both work. The server needs `python3` for the install. Sessions already
+running pick the hook up on their next turn. If the connection drops, the
+helper reconnects and replays what it missed. `remote list` and
+`remote remove SERVER` manage the list, kept in `state/remotes.json`.
+
+Pressing a server session's key opens it in the desktop app when it runs under
+Remote Control (the hook sends its Remote Control id). A server session started
+some other way only lights its key; a press marks it seen.
+
+**Without ssh: the ntfy.sh relay.** For machines this Mac cannot reach by ssh,
+such as Anthropic-hosted cloud sessions, the same hook can publish each event
+to a private topic on [ntfy.sh](https://ntfy.sh) that the helper streams.
+`cloud setup` creates the topic in `state/relay.json` (keep it private) and
+prints the setup-script block; `cloud test` sends a fake session through it.
+ntfy.sh limits how many messages one address may publish per day without an
+account, and a busy day of Claude Code can exceed it, after which that
+machine's keys stop changing until the limit recovers. That path is untested
+with Anthropic-hosted sessions.
 
 ## Known limits
 
 - Unofficial. Any update to the pad's firmware, Work Louder's Input app, the
   Claude desktop app, or Claude Code can change the behaviour this relies on.
 - One host at a time: the ChatGPT app owns the pad while it runs.
-- Sessions elsewhere need the relay hook installed on that machine; Anthropic-hosted
+- Sessions elsewhere need the hook installed on that machine (`remote add`); Anthropic-hosted
   cloud sessions are untested with it.
 - Plain chats in the desktop app run no hooks and get no light.
 - The pad auto-repeats held keys and double-reports some presses; the helper

@@ -13,6 +13,7 @@ import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { accessibilityGranted } from "./tapkey.js";
 import { loadRelay, subscribe as subscribeRelay } from "./relay.js";
+import { loadRemotes, follow as followRemote } from "./remote.js";
 
 const CHATGPT_POLL_MS = 3000;
 // The pad falls back to its stored lighting after a power cycle or profile
@@ -32,6 +33,7 @@ export class Daemon {
   #resyncTimer = null;
   #control = null;
   #relay = null;
+  #remotes = [];
   #lastFocusAt = new Map();
 
   constructor(log = createLogger()) {
@@ -127,6 +129,7 @@ export class Daemon {
         sessions: [...this.sessions.sessions.values()].map((s) => ({ key: s.slot + 1, status: s.status, cwd: s.cwd, where: s.cloud ? "cloud" : s.host ? "desktop" : s.iterm ? "iterm" : "unknown" })),
         focused: this.sessions.focused,
         relay: this.#relay ? { ...this.#relay.state } : null,
+        remotes: this.#remotes.map((r) => ({ ...r.state })),
       }),
       stop: async () => {
         setTimeout(() => void this.stop().finally(() => process.exit(0)), 50);
@@ -150,6 +153,7 @@ export class Daemon {
     this.sessions.start();
     const relay = loadRelay();
     if (relay?.topic) this.#relay = subscribeRelay(relay, (m) => this.sessions.ingestRelay(m), this.log);
+    this.#remotes = loadRemotes().map((r) => followRemote(r.ssh, (m) => this.sessions.ingestRelay(m), this.log));
     void this.#pollChatGpt();
     this.#timer = setInterval(() => void this.#pollChatGpt(), CHATGPT_POLL_MS);
     this.#resyncTimer = setInterval(() => {
@@ -166,6 +170,7 @@ export class Daemon {
     if (this.#resyncTimer) clearInterval(this.#resyncTimer);
     this.sessions.stop();
     this.#relay?.stop();
+    for (const r of this.#remotes) r.stop();
     if (this.#control) this.#control.close();
     await this.controls.resetInputState();
     await this.clearLights();

@@ -43,6 +43,11 @@ switch (command) {
     await run(rest[0]);
     break;
   }
+  case "remote": {
+    const { run } = await import("../src/remote.js");
+    await run(rest[0], rest[1]);
+    break;
+  }
   case "keys": {
     const { ask } = await import("../src/control.js");
     if (rest[0] === "free" && /^[1-6]$/.test(rest[1] ?? "")) {
@@ -112,6 +117,6 @@ switch (command) {
     break;
   }
   default:
-    console.log("usage: claude-micro <run|status|stop|keys [free N]|doctor|probe [colour]|front|config|hooks <diff|install|uninstall|status>|agent <install|uninstall|status>|cloud <setup|test|repo-files>>");
+    console.log("usage: claude-micro <run|status|stop|keys [free N]|doctor|probe [colour]|front|config|hooks <diff|install|uninstall|status>|agent <install|uninstall|status>|remote <add|remove|list> [ssh-alias]|cloud <setup|test|repo-files|remote-install>>");
     process.exit(command === "help" ? 0 : 2);
 }

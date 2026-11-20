@@ -172,6 +172,11 @@ export async function run() {
   } else if (live) {
     note("cloud relay", "not set up (node bin/claude-micro.js cloud setup)");
   }
+  for (const r of live?.remotes ?? []) {
+    const ago = r.lastMessageAt ? `, last event ${Math.round((Date.now() - r.lastMessageAt) / 1000)} s ago` : ", no events yet";
+    if (r.connected) ok(`server ${r.host}`, `following over ssh${ago}`);
+    else bad(`server ${r.host}`, `ssh not connected (${r.lastError ?? "connecting"})`, `Check that  ssh -o BatchMode=yes ${r.host} true  works without a prompt; the helper keeps retrying.`);
+  }
   if (await chatGptRunning()) note("ChatGPT app", "running; the helper yields the pad while it is open");
   else ok("ChatGPT app", "not running");
   if (running("Input.app/Contents/MacOS")) note("Input app", "running; it competes for the pad's lights, quit it when not configuring");
