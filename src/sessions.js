@@ -17,8 +17,9 @@ const ROTATE_BYTES = 1024 * 1024;
 const DEFAULT_EXPIRE_HOURS = 4; // a finished or idle session silent this long gives its key back
 
 export const STATUS_LIGHT = {
-  // Pure blue: any green component shows at the dim end of the breath.
-  working: { c: 0x0000ff, b: 1, e: EFFECT.breath, s: 0.35 },
+  // Periwinkle blue: pure blue reads too dim in a bright room, and adding equal
+  // red and green lightens it without the green tint a sky blue shows.
+  working: { c: 0x4040ff, b: 1, e: EFFECT.breath, s: 0.35 },
   done: { c: COLORS.green, b: 1, e: EFFECT.solid, s: 0 },
   // Needs you: deep red, breathing fast, unmistakable next to green and blue.
   needs: { c: 0xff0000, b: 1, e: EFFECT.breath, s: 0.7 },
