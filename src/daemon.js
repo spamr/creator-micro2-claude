@@ -97,14 +97,16 @@ export class Daemon {
     this.#paintTimer = setTimeout(() => void this.paint(), 80);
   }
 
-  /** Keys show their sessions; the ring follows the focused session, or
-   *  glows dim white when no session is known (helper alive, nothing to show). */
+  /** Keys show their sessions. The ring breathes at full brightness while any
+   *  session works or needs you, else follows the focused session at half
+   *  brightness, or glows dim white when no session is known. */
   async paint() {
     if (!this.keypad.connected) return;
     await this.keypad.setKeyLights(this.sessions.keyLights()).catch(() => {});
     const status = this.sessions.ringStatus();
     const light = status ? STATUS_LIGHT[status] : null;
-    const ambient = light ? { e: light.e, b: 0.5, s: light.s, m: 0, c: light.c } : ring(COLORS.white, 0.15);
+    const loud = status === "working" || status === "needs";
+    const ambient = light ? { e: light.e, b: loud ? 1 : 0.5, s: light.s, m: 0, c: light.c } : ring(COLORS.white, 0.15);
     await this.keypad.setRing(ambient).catch(() => {});
   }
 

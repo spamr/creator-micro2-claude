@@ -30,6 +30,6 @@
   <text class="n" x="340" y="404" text-anchor="middle">Dial: turn to scroll; click for the effort menu, turn to choose, click to confirm. Model key works the same way.</text>
   <text class="n" x="340" y="426" text-anchor="middle">Agent keys light per Claude Code session: light blue working, green done, deep red breathing needs you,</text>
   <text class="n" x="340" y="444" text-anchor="middle">soft warm glow seen. Press to open that session; hold for a second to free the key.</text>
-  <text class="n" x="340" y="466" text-anchor="middle">Blue outline = the ring, which follows the focused session. Tap the layer sensor to cycle layers; use the ChatGPT layer.</text>
-  <text class="n" x="340" y="488" text-anchor="middle">Stick up / down: previous / next session.</text>
+  <text class="n" x="340" y="466" text-anchor="middle">Blue outline = the ring: breathes light blue while any session works, red when one needs you.</text>
+  <text class="n" x="340" y="488" text-anchor="middle">Stick up / down: previous / next session. Tap the layer sensor to cycle layers; use the ChatGPT layer.</text>
 </svg>

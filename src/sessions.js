@@ -297,8 +297,12 @@ export class Sessions extends EventEmitter {
     });
   }
 
-  /** Ring colour: the focused session's status, else the most urgent one. */
+  /** Ring colour: red while any session needs you, light blue while any is
+   *  working; otherwise the focused session's status, else the most urgent one. */
   ringStatus() {
+    const all = [...this.sessions.values()];
+    if (all.some((s) => s.status === "needs")) return "needs";
+    if (all.some((s) => s.status === "working")) return "working";
     const focused = this.focused ? this.sessions.get(this.focused) : null;
     if (focused) return focused.status;
     let best = null;
