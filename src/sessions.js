@@ -17,9 +17,9 @@ const ROTATE_BYTES = 1024 * 1024;
 const DEFAULT_EXPIRE_HOURS = 4; // a finished or idle session silent this long gives its key back
 
 export const STATUS_LIGHT = {
-  // Periwinkle blue: pure blue reads too dim in a bright room, and adding equal
-  // red and green lightens it without the green tint a sky blue shows.
-  working: { c: 0x4040ff, b: 1, e: EFFECT.breath, s: 0.35 },
+  // Deep blue: no red, which brown switch housings shift towards orange, and a
+  // touch of green so it reads brighter than pure blue in a lit room.
+  working: { c: 0x0040ff, b: 1, e: EFFECT.breath, s: 0.35 },
   done: { c: COLORS.green, b: 1, e: EFFECT.solid, s: 0 },
   // Needs you: deep red, breathing fast, unmistakable next to green and blue.
   needs: { c: 0xff0000, b: 1, e: EFFECT.breath, s: 0.7 },
@@ -297,7 +297,7 @@ export class Sessions extends EventEmitter {
     });
   }
 
-  /** Ring colour: red while any session needs you, light blue while any is
+  /** Ring colour: red while any session needs you, deep blue while any is
    *  working; otherwise the focused session's status, else the most urgent one. */
   ringStatus() {
     const all = [...this.sessions.values()];

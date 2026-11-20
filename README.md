@@ -17,9 +17,9 @@ any update may change. macOS only.
   model menus, scrolling, and dictation through Wispr Flow, each sent only while
   the Claude desktop app (or iTerm running Claude Code) is the frontmost app.
 - **Lights show Claude Code sessions.** Each session takes one of the six
-  agent keys and keeps it: light blue breathing while working, green when done,
+  agent keys and keeps it: deep blue breathing while working, green when done,
   deep red breathing when it needs you, a soft warm glow once you have looked. Pressing the key
-  opens that session in the desktop app. The ring breathes light blue while
+  opens that session in the desktop app. The ring breathes deep blue while
   any session is working and red while one needs you; otherwise it follows
   the session you last submitted to.
 - **It yields to ChatGPT.** While the ChatGPT desktop app runs it releases the
