@@ -23,8 +23,9 @@ export const STATUS_LIGHT = {
   done: { c: COLORS.green, b: 1, e: EFFECT.solid, s: 0 },
   // Needs you: deep red, breathing fast, unmistakable next to green and blue.
   needs: { c: 0xff0000, b: 1, e: EFFECT.breath, s: 0.7 },
-  // Seen: dim white, which these LEDs render as a soft warm glow.
-  idle: { c: COLORS.white, b: 0.2, e: EFFECT.solid, s: 0 },
+  // Seen: half-bright white, which brown switches render as a warm glow; bright
+  // enough to tell a key with a live session from a free (dark) one.
+  idle: { c: COLORS.white, b: 0.5, e: EFFECT.solid, s: 0 },
 };
 
 // Hook event -> status. Anything else only refreshes "last seen".
