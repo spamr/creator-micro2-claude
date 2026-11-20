@@ -20,6 +20,16 @@ repo="${cwd##*/}"
 # "Still waiting for you" reminders change nothing on the pad; don't send them.
 case "$nt" in idle*) exit 0 ;; esac
 bridge="${CLAUDE_CODE_BRIDGE_SESSION_ID:-}"
+# Newer Remote Control sessions don't export that variable; their id is in the
+# Claude process's --sdk-url (…/code/sessions/cse_…). Look a few parents up.
+if [ -z "$bridge" ]; then
+  pid="$PPID"; hops=0
+  while [ -n "$pid" ] && [ "$pid" -gt 1 ] 2>/dev/null && [ "$hops" -lt 6 ]; do
+    bridge="$(ps -ww -o args= -p "$pid" 2>/dev/null | sed -n 's#.*/code/sessions/\(cse_[A-Za-z0-9]*\).*#\1#p' | head -n 1)"
+    [ -n "$bridge" ] && break
+    pid="$(ps -o ppid= -p "$pid" 2>/dev/null | tr -d ' ')"; hops=$((hops + 1))
+  done
+fi
 host="$(hostname 2>/dev/null | cut -d. -f1)"
 msg="$(printf '{"sid":"%s","ev":"%s","nt":"%s","repo":"%s","bridge":"%s","host":"%s","cloud":1,"t":%s}' "$sid" "$ev" "$nt" "$repo" "$bridge" "$host" "$(date +%s)")"
 {

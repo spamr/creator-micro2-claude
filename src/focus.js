@@ -32,8 +32,11 @@ export async function focusSession(session, log) {
     if (session.bridge && /^[A-Za-z0-9_-]+$/.test(session.bridge)) {
       // The desktop app shows Remote Control sessions from claude.ai/code/<id>;
       // its claude://claude.ai/... links navigate the app to the same page.
-      log(`focus key ${session.slot + 1}: remote session ${session.bridge} (${session.cwd})`);
-      return openInClaude(`claude://claude.ai/code/${session.bridge}`, log);
+      // Newer sessions report a cse_… id; claude.ai links use session_ plus the
+      // same suffix (Claude Code converts them the same way).
+      const id = session.bridge.startsWith("cse_") ? `session_${session.bridge.slice(4)}` : session.bridge;
+      log(`focus key ${session.slot + 1}: remote session ${id} (${session.cwd})`);
+      return openInClaude(`claude://claude.ai/code/${id}`, log);
     }
     log(`key ${session.slot + 1}: remote session (${session.cwd}) without a Remote Control id; marked seen only`);
     return false;
