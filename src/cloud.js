@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { ensureRelay, loadRelay, publishUrl, publish } from "./relay.js";
 
 const HOOK_TEMPLATE = fileURLToPath(new URL("../hooks/claude-micro-cloud-hook.sh", import.meta.url));
-const EVENTS = ["SessionStart", "UserPromptSubmit", "Stop", "Notification", "SessionEnd"];
+const EVENTS = ["SessionStart", "UserPromptSubmit", "PostToolUse", "Stop", "Notification", "SessionEnd"];
 
 function hookScript(url) {
   return readFileSync(HOOK_TEMPLATE, "utf8").replace("__RELAY_URL__", url);

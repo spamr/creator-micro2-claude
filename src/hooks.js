@@ -10,7 +10,7 @@ import { spawnSync } from "node:child_process";
 export const SETTINGS_PATH = `${homedir()}/.claude/settings.json`;
 export const BACKUP_PATH = `${SETTINGS_PATH}.claude-micro-backup`;
 export const HOOK_SCRIPT = fileURLToPath(new URL("../hooks/claude-micro-hook.sh", import.meta.url));
-export const HOOK_EVENTS = ["SessionStart", "UserPromptSubmit", "Stop", "Notification", "SessionEnd"];
+export const HOOK_EVENTS = ["SessionStart", "UserPromptSubmit", "PostToolUse", "Stop", "Notification", "SessionEnd"];
 const MARK = "claude-micro-hook.sh";
 
 function readSettings() {

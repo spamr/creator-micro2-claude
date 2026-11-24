@@ -2,7 +2,7 @@
 // state/events.jsonl (written by hooks/claude-micro-hook.sh). Each live
 // session takes the first free key and keeps it (sticky), so lights never
 // shuffle under your fingers. Key colours: working = breathing blue,
-// done = green, needs you = amber, idle = dim white, free = off.
+// done = green, needs you = breathing red, idle = warm glow, free = off.
 import { EventEmitter } from "node:events";
 import { existsSync, mkdirSync, openSync, readSync, closeSync, statSync, watch, writeFileSync, readFileSync, renameSync } from "node:fs";
 import { fileURLToPath } from "node:url";

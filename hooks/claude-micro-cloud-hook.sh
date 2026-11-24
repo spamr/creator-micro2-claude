@@ -10,7 +10,8 @@
 url="${CLAUDE_MICRO_RELAY_URL:-__RELAY_URL__}"
 log="$HOME/.claude/claude-micro-events.jsonl"
 payload="$(cat 2>/dev/null)"
-field() { printf '%s' "$payload" | sed -n "s/.*\"$1\":\"\\([^\"]*\\)\".*/\\1/p" | head -n 1; }
+# First match only: tool events carry tool input that may repeat a field name.
+field() { printf '%s' "$payload" | grep -o "\"$1\":\"[^\"]*\"" | head -n 1 | cut -d '"' -f 4; }
 sid="$(field session_id)"
 ev="$(field hook_event_name)"
 nt="$(field notification_type)"
@@ -19,6 +20,15 @@ repo="${cwd##*/}"
 [ -n "$sid" ] && [ -n "$ev" ] || exit 0
 # "Still waiting for you" reminders change nothing on the pad; don't send them.
 case "$nt" in idle*) exit 0 ;; esac
+# Answering a permission prompt or a question fires no hook of its own. A
+# "needs you" notification leaves a marker; the next PostToolUse clears it and
+# is sent as "working again". Every other PostToolUse exits here, unsent.
+mark="$HOME/.claude/claude-micro-needs-$(printf '%s' "$sid" | tr -cd 'A-Za-z0-9_-')"
+case "$ev" in
+  PostToolUse) [ -f "$mark" ] || exit 0; rm -f "$mark" 2>/dev/null ;;
+  Notification) : > "$mark" 2>/dev/null ;;
+  *) rm -f "$mark" 2>/dev/null ;;
+esac
 bridge="${CLAUDE_CODE_BRIDGE_SESSION_ID:-}"
 # Newer Remote Control sessions don't export that variable; their id is in the
 # Claude process's --sdk-url (…/code/sessions/cse_…). Look a few parents up.
