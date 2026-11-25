@@ -96,7 +96,7 @@ use it; they are all small and readable.
 | --- | --- |
 | Creator Micro 2 firmware | 0.6.3, over Bluetooth |
 | Work Louder Input | 1.1.0 (ChatGPT preset installed on the pad) |
-| Claude desktop app | 6.6395.1 |
+| Claude desktop app | 6.6395.1 and 7.37095.0 |
 | Claude Code | 2.1.x (hooks, local and on the server) |
 | macOS | 26 (Tahoe), Apple silicon |
 | Node | 23 (22 or newer should work) |
@@ -125,6 +125,16 @@ node bin/claude-micro.js hooks diff      # review the Claude settings change
 node bin/claude-micro.js hooks install   # backs up ~/.claude/settings.json first
 node bin/claude-micro.js agent install   # login item; starts now and at login
 node bin/claude-micro.js doctor          # says exactly what is missing
+```
+
+To update, pull and re-run the installs, since new versions can add hook
+events or change the server's hook (both commands back up settings again):
+
+```bash
+git pull && npm install
+node bin/claude-micro.js hooks install          # this Mac
+node bin/claude-micro.js remote add SERVER      # each server you follow
+launchctl kickstart -k gui/$(id -u)/com.claude-micro.helper
 ```
 
 `uninstall.sh` removes the login item and the hooks (`--restore-settings` puts
@@ -241,6 +251,9 @@ with Anthropic-hosted sessions.
 - Sessions elsewhere need the hook installed on that machine (`remote add`); Anthropic-hosted
   cloud sessions are untested with it.
 - Plain chats in the desktop app run no hooks and get no light.
+- Answering a permission prompt or a question fires no hook, so a red key
+  turns blue when the approved tool finishes, not the moment you answer. A
+  denied request stays red until the next tool runs or the turn ends.
 - The pad auto-repeats held keys and double-reports some presses; the helper
   filters this, so a deliberate double press must be slower than 150 ms.
 - Over Bluetooth, holding the layer touch sensor starts a new pairing and
